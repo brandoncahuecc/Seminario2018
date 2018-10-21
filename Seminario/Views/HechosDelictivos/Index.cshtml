@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Hechos Delictivos";
+}
+
+<table class="table">
+    <tr>
+        <td>
+            <h2>@Html.ActionLink("Nuevo Delito Contra la Vida", "ContraLaVida", null, new { @class = "btn btn-primary" })</h2>
+        </td>
+        <td>
+            <h2>@Html.ActionLink("Nuevo Delito Contra el Patrimonio", "ContraElPatrimonio", null, new { @class = "btn btn-primary" })</h2>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2>@Html.ActionLink("Listar Delitos Contra la Vida", "LContraLaVida", null, new { @class = "btn btn-success" })</h2>
+        </td>
+        <td>
+            <h2>@Html.ActionLink("Listar Delitos Contra el Patrimonio", "LContraElPatrimonio", null, new { @class = "btn btn-success" })</h2>
+        </td>
+    </tr>
+</table>

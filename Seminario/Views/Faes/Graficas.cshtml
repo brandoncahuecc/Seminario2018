@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "FAES";
+}
+
+<style>
+    .chart {
+        width: 100%;
+        min-height: 450px;
+    }
+
+    .row {
+        margin: 0 !important;
+    }
+</style>
+
+@section head_scripts{
+    <script type="text/javascript" src="~/Scripts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart2);
+
+        function drawChart2() {
+
+            var filt = @Html.Raw(Json.Encode(ViewBag.Filtro));
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Delito');
+            data.addColumn('number', 'Cantidad');
+
+            var options = {
+                title: 'Delitos más Comunes',
+
+                pieHole: 0.4,
+            };
+
+            $.ajax({
+                url: '/Faes/DelitosComunes?filt=' + filt,
+                datatype: "json",
+                type: "get",
+                async: false,
+                data: {},
+                contentType: 'application/json',
+                success: function (d) {
+                    $.each(d, function (index, item) {
+                        data.addRow([item.Nombre, item.Numero]);
+                    });
+                },
+                error: function (xhr) {
+                    alert("Error " + xhr);
+                }
+            });
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+            google.visualization.events.addListener(chart, 'ready', function () {
+                var exportData = chart.getImageURI();
+                $('#export2').attr({ 'href': exportData, 'download': 'Report' }).show();
+            });
+
+            chart.draw(data, options);
+        }
+
+        function drawChart() {
+
+            var filt = @Html.Raw(Json.Encode(ViewBag.Filtro));
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Delito');
+            data.addColumn('number', 'Cantidad');
+
+            var options = {
+                title: 'Lugares con más Ocurrencias de Delitos',
+                pieHole: 0.4,
+            };
+
+            $.ajax({
+                url: '/Faes/LugaresComunes?filt=' + filt,
+                datatype: "json",
+                type: "get",
+                async: false,
+                data: {},
+                contentType: 'application/json',
+                success: function (d) {
+                    $.each(d, function (index, item) {
+                        data.addRow([item.Nombre, item.Numero]);
+                    });
+                },
+                error: function (xhr) {
+                    alert("Error " + xhr);
+                }
+            });
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            google.visualization.events.addListener(chart, 'ready', function () {
+                var exportData = chart.getImageURI();
+                $('#export').attr({ 'href': exportData, 'download': 'Report' }).show();
+            });
+
+            chart.draw(data, options);
+        }
+    </script>
+
+}<div class="row">
+    <div class="col-md-12 col-sm-12 text-center">
+        <h1>Graficas Estadisticas del Municipio de @ViewBag.Municipio</h1>
+        <h3>Mes de @ViewBag.Mes</h3>
+    </div>
+    <div class="clearfix "></div>
+    <div class="col-md-6 center-block">
+        <div id="piechart" class="chart"></div>
+        <a id="export" href="#" style="display:none" download="FileName" class="btn btn-success">Exportar Grafica</a>
+    </div>
+    <div class="col-md-6 center-block">
+        <div id="piechart2" class="chart"></div>
+        <a id="export2" href="#" style="display:none" download="FileName" class="btn btn-success">Exportar Grafica</a>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-danger" })
+        </th>
+    </tr>
+</table>

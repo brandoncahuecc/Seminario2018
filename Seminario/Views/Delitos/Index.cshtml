@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Seminario.Models.Delito>
+
+@{
+    ViewBag.Title = "Delitos";
+}
+
+<table class="table">
+    <tr>
+        <td>
+            <h2>Delitos</h2>
+        </td>
+        <td>
+            <h2>@Html.ActionLink("Nuevo Delito", "Create", null, new { @class = "btn btn-primary" })</h2>
+        </td>
+    </tr>
+</table>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoDelito)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoDelito)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>
